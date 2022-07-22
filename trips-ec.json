@@ -2,9 +2,9 @@
  "geopairs":
   [
    {
-     "origin": [-79.88,-2.18],
+     "origin": [-80.25,-2.71],
      "destination": [-78.5,-0.18],
-     "descr": "gye-uio",
+     "descr": "psj-uio",
      "color": "blue",
      "shape": "circle",
      "size": 5,
@@ -12,9 +12,9 @@
      "mapboxapiroute": {}
    },
    {
-     "origin": [-79.88,-2.18],
+     "origin": [-80.25,-2.71],
      "destination": [-78.5,-0.18],
-     "descr": "gye-uio",
+     "descr": "psj-uio",
      "color": "blue",
      "shape": "circle",
      "size": 5,
@@ -22,9 +22,9 @@
      "mapboxapiroute": {}
    },
    {
-     "origin": [-79.88,-2.18],
+     "origin": [-80.25,-2.71],
      "destination": [-78.5,-0.18],
-     "descr": "gye-uio",
+     "descr": "psj-uio",
      "color": "blue",
      "shape": "circle",
      "size": 5,
@@ -32,9 +32,9 @@
      "mapboxapiroute": {}
    },
    {
-     "origin": [-79.88,-2.18],
+     "origin": [-80.25,-2.71],
      "destination": [-78.5,-0.18],
-     "descr": "gye-uio",
+     "descr": "psj-uio",
      "color": "blue",
      "shape": "circle",
      "size": 5,
@@ -102,9 +102,9 @@
     "mapboxapiroute": {}
    },
    {
-    "origin": [-79.96,-3.26],
+    "origin": [-79.99,-3.2560], 
     "destination": [-79.20,-4.0],
-    "descr": "mch-loj",
+    "descr": "pbv-loj",
     "color": "orange",
     "shape": "circle",
     "size": 5,
@@ -116,6 +116,26 @@
     "destination": [-78.5,-0.18],
     "descr": "rio-uio",
     "color": "magenta",
+    "shape": "circle",
+    "size": 5,
+    "updateRate": 60,
+    "mapboxapiroute": {}
+   },
+   {
+    "origin": [-78.66,-1.67],
+    "destination": [-79.01,-2.91],
+    "descr": "rio-cue",
+    "color": "sandybrown",
+    "shape": "circle",
+    "size": 5,
+    "updateRate": 60,
+    "mapboxapiroute": {}
+   },
+   {
+    "origin": [-79.01,-2.91],
+    "destination": [-79.20,-4.0],
+    "descr": "cue-loj",
+    "color": "goldenrod",
     "shape": "circle",
     "size": 5,
     "updateRate": 60,

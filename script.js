@@ -12,8 +12,20 @@ let start, previousTimeStamp = [], counter = [], direction = [];
 let animRequest;
 let animStatus = false;
 
+// Var to control show/not show of routes
+let showRoutes = true;
+let totalRouteLengthKm = 0;
+
 // map var for mapbox map creation
 let map;
+
+if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+  // true for mobile device
+  console.log("mobile device");
+}else{
+  // false for not mobile device
+  console.log("not mobile device");
+}
 
 function pointOnCircle(i) {
   // Grabs coordinates from trips object
@@ -28,7 +40,8 @@ function pointOnCircle(i) {
   if ((counter[i] == 0)) direction[i] = 1;
   return {
     'type': 'Point',
-    'coordinates': trips.geopairs[i].mapboxapiroute.routes[0].geometry.coordinates[counter[i]]
+    'coordinates': trips.geopairs[i].mapboxapiroute
+      .routes[0].geometry.coordinates[counter[i]]
   };
 }
 
@@ -66,6 +79,9 @@ async function getAllTripRoutes(trips) {
 async function createSrcAndLyr() {
   // Called after trips has been populated with data from
   // json file, takes this data and creates point and layers
+  // Populates srcArray which has one entry per geopair
+  // Elements of srcArray are objects
+  // Each element has points and layers
   const shp = 'circle';
   const sze = 15;
   const clr = 'green';
@@ -75,22 +91,33 @@ async function createSrcAndLyr() {
     const shp = trips.geopairs[i].shape;
     const sze = trips.geopairs[i].size;
     const clr = trips.geopairs[i].color;
-    srcArray[i] = new PointSource(`point${i}`, org, dst, shp, sze, clr);
+    srcArray[i] = new PointSource(i, org, dst, shp, sze, clr);
   }
+}
+
+async function computeDistance(){
+// Computes the sum of the lengths of all routes
+  srcArray.forEach((elem,index) => {
+    totalRouteLengthKm += 
+      trips.geopairs[index].mapboxapiroute.routes[0].distance;
+  });
+    totalRouteLengthKm = totalRouteLengthKm/1000 * 2;// round trip
+    console.log(totalRouteLengthKm) ;
+  
 }
 
 // The series of promises below make sure all the elements
 // have been read before the map is drawn
-
 getJsonData(tripsFile) // Read JSON file  orig/dest, etc
   .then((d) => { trips = d })
   .then(() => getAllTripRoutes(trips)) // Get all coords
-  .then(() => createSrcAndLyr())
+  .then(() => createSrcAndLyr()) // Creates srcArray
+  .then(() => computeDistance())
   .then(() => {
     map = new mapboxgl.Map({
       container: 'map-one',
       style: 'mapbox://styles/mapbox/traffic-night-v2',
-      center: [-78, -2], // starting position
+      center: [-78.8, -2], // starting position
       zoom: 6,
       pitch: 30
     });
@@ -101,11 +128,30 @@ getJsonData(tripsFile) // Read JSON file  orig/dest, etc
       
       // Take source array and add sources and layers to
       // the map
-      srcArray.forEach((elem) => {
-        map.addSource(elem.pointSourceObj[0], elem.pointSourceObj[1]);
+      srcArray.forEach((elem,index) => {
+
+        // Before adding the route, add coords to route
+        // the coords are in trips var
+        elem.routeSourceObj[1].data.geometry.coordinates = 
+          trips.geopairs[index].mapboxapiroute
+          .routes[0].geometry.coordinates;
+
+        // Add routes sources and layers for the routes
+        map.addSource(elem.routeSourceObj[0],
+                     elem.routeSourceObj[1]);
+        map.addLayer(elem.routeLayerObj);
+
+        
+        // Add point sourcesand layers for the points
+        map.addSource(elem.pointSourceObj[0],
+                      elem.pointSourceObj[1]);
         map.addLayer(elem.pointLayerObj);
+
       });
 
+
+// map.moveLayer('route', 'point0');
+      
       // Zero out elements of previousTimeStamp, counter
       // and direction arrays used 
       // for animation of map elements
@@ -121,9 +167,11 @@ getJsonData(tripsFile) // Read JSON file  orig/dest, etc
         for (let i = 0; i < trips.geopairs.length; i++) {
           updateRate = trips.geopairs[i].updateRate;
 
+          // Check if it is time to move the point 
           if (timestamp > (previousTimeStamp[i] + updateRate)) {
             previousTimeStamp[i] = timestamp;
-            map.getSource(srcArray[i].id).setData(pointOnCircle(i));
+            map.getSource(srcArray[i].pointSourceObj[0])
+              .setData(pointOnCircle(i));
           }
         } // end for i
         
@@ -144,14 +192,39 @@ getJsonData(tripsFile) // Read JSON file  orig/dest, etc
         .setLngLat([-78.5, -.18])
         .addTo(map);
 
-      document.getElementById('replay').addEventListener('click', () => {
-        // Toggle the animation status then start or stop animation
+      document.getElementById('replay').
+        addEventListener('click', () => {
+        // Toggle the animation status 
+        // then start or stop animation
         animStatus = !animStatus;
-        if (!animStatus) cancelAnimationFrame(animRequest);
-        else animRequest = animateMapElements(0);
-      }); // end event listener click
+        if (!animStatus) {
+          cancelAnimationFrame(animRequest);
+          document.getElementById('replay').innerHTML="Animar";
+        }
+        else {
+          animRequest = animateMapElements(0);
+          document.getElementById('replay').innerHTML="Detener";
+        }
+        }); // end event listener click
 
+      document.getElementById('rutas').
+        addEventListener('click', () => {
+        // Mostrar y ocultar rutas
+        showRoutes = !showRoutes;
+        if (!showRoutes) {
+            srcArray.forEach((elem,index) => {
+            map.removeLayer(elem.routeLayerObj.id)
+            });  
+            document.getElementById('rutas').innerHTML="Mostrar<br>Rutas";
+        } else {
+            srcArray.forEach((elem,index) => {
+            map.addLayer(elem.routeLayerObj)
+            }); 
+            document.getElementById('rutas').innerHTML="Ocultar<br>Rutas";
+        }
+        }); // end event listener click
 
+ 
 
     }) // end map on load
 
