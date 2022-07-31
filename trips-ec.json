@@ -45,7 +45,7 @@
     "origin": [-80.70,-0.97],
     "destination": [-78.5,-0.18],
     "descr": "mnt-uio",
-    "color": "green",
+    "color": "LimeGreen",
     "shape": "circle",
     "size": 5,
     "updateRate": 30,

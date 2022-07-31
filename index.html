@@ -5,90 +5,90 @@
     <meta name="viewport" content="width=device-width">
     <title>repl.it</title>
     <link href="style.css" rel="stylesheet" type="text/css" />
+
+    <link href="https://fonts.googleapis.com/css2family=Roboto&display=swap" rel="stylesheet">  
+    
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.css' rel='stylesheet' />
     
   </head>
   <body>
-
+    <h2 class="header-title">ECUADOR: DEJANDO ATRÁS
+      LOS COMBUSTIBLES DEL PASADO</h1>
     <div class="wrapper">
       <div class="flex-container">
-        <div class="box one" id='map-one'>
-          <div class="overlay">
-            <button id="replay">Animar</button>
-          </div>
-          <div class="overlay">
-            <button id="rutas">Ocultar</br>Rutas</button>
+        <div class="box one">
+          <div class="one-container">
+            <div class="oneA" id="map-one">
+              <div class="overlay">
+                <button id="replay">Animar</button>
+              </div>
+              <div class="overlay">
+                <button id="rutas">Ocultar</br>Rutas</button>
+              </div>
+            </div>
           </div>
         </div>
         <div class="box two">
           <div class="two-container">
-            <div class="twoA">
-                  <div class="date"> 
-                    10 rutas, 7000 Km
+            <div class="two-container-left">
+              
+              <div class="twoA">
+                  <div class="output-small"> 
+                    11 rutas
                   </div>
-                  <div class="city">
-                    SUBSIDIO
+                  <div class="output-medium">
+                    DISTANCIA
                   </div>
-                  <div class="temp">
-                     <img 
-                       src="https://codefrog.tech/cp/wp/ts.png"
-                       alt="" width="60">
-                       210M
-                  </div>
-            </div>
+                  <div class="output-large" id="distancia-recorrida">
+                      
+                  </div>   
+              </div>
             
-            <div class="twoB">
-                  <div class="date"> 
-                    10 rutas, 7000 Km
+              <div class="twoB">
+                  <div class="output-small"> 
+                    Pago Anual
                   </div>
-                  <div class="city">
+                  <div class="output-medium">
                     SUBSIDIO
                   </div>
-                  <div class="temp">
-                     <img 
-                       src="https://codefrog.tech/cp/wp/ts.png"
-                       alt="" width="60">
-                       210M
+                  <div class="output-large">
+
                   </div>    
+              </div>
+            
+              <div class="twoC">
+                  <div> A </div>
+                  <div> B </div>
+              </div>
+              
             </div>
             
-            <div class="twoC">
-                  <div class="date"> 
-                    10 rutas, 7000 Km
-                  </div>
-                  <div class="city">
-                    SUBSIDIO
-                  </div>
-                  <div class="temp">
-                     <img 
-                       src="https://codefrog.tech/cp/wp/ts.png"
-                       alt="" width="60">
-                       210M
-                  </div>
+            <div class="two-container-right">
+
+                <div>
+                <input type="range" name="ageInputName" 
+                  id="ageInputId" value="24" min="1" max="110"
+                  oninput="ageOutputId.value =
+                  ageInputId.value">
+                <output name="ageOutputName" 
+                  id="ageOutputId">36</output>
+                </div>
+              
             </div>
-            
+           
           </div>
         </div>
-        <div class="box three">
+        
+<!--         <div class="box three">
           <div class="three-header">Three Header </div>
           <div class ="three-body">Three Body </div>
-
-        </div>
+        </div> -->
+        
       </div>
     </div>
 
 
-
-
-
-<!--                 <div class="child-twoB-2 ">
-                <input type="range" name="ageInputName" 
-                  id="ageInputId" value="24" min="1" max="110"
-                  oninput="ageOutputId.value = ageInputId.value">
-                <output name="ageOutputName" 
-                  id="ageOutputId">36</output>
-  </div> -->
   <script src="classes.js"></script>
   <script src="script.js"></script>
   </body>

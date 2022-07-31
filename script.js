@@ -1,5 +1,11 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoidXJiYW4wMSIsImEiOiJjam50MXJoMG4wMXBqM3FwbWViMjN5MW1wIn0.fw5_hMbQv0qyZkLaVJBbFQ';
 
+var orientation = (screen.orientation || {}).type || screen.mozOrientation || screen.msOrientation;
+
+console.log(orientation);
+
+
+
 // Variables to read and store json data with coordinates
 // and other config info
 tripsFile = 'trips-ec.json';
@@ -117,14 +123,15 @@ getJsonData(tripsFile) // Read JSON file  orig/dest, etc
     map = new mapboxgl.Map({
       container: 'map-one',
       style: 'mapbox://styles/mapbox/traffic-night-v2',
-      center: [-78.8, -2], // starting position
-      zoom: 6,
-      pitch: 30
+      center: [-79.5, -2.2], // starting position
+      zoom: 7,
+      pitch: 50
     });
 
     map.addControl(new mapboxgl.FullscreenControl());
     
     map.on('load', () => {
+
       
       // Take source array and add sources and layers to
       // the map
@@ -182,16 +189,6 @@ getJsonData(tripsFile) // Read JSON file  orig/dest, etc
       }
 
 
-      //Create a new marker.
-      const marker = new mapboxgl.Marker(
-        {
-          color: 'blue',
-          draggable: true
-        }
-      )
-        .setLngLat([-78.5, -.18])
-        .addTo(map);
-
       document.getElementById('replay').
         addEventListener('click', () => {
         // Toggle the animation status 
@@ -203,9 +200,10 @@ getJsonData(tripsFile) // Read JSON file  orig/dest, etc
         }
         else {
           animRequest = animateMapElements(0);
-          document.getElementById('replay').innerHTML="Detener";
+          document.getElementById('replay')
+            .innerHTML="Detener";
         }
-        }); // end event listener click
+        }); // end event listener click animate button
 
       document.getElementById('rutas').
         addEventListener('click', () => {
@@ -215,21 +213,30 @@ getJsonData(tripsFile) // Read JSON file  orig/dest, etc
             srcArray.forEach((elem,index) => {
             map.removeLayer(elem.routeLayerObj.id)
             });  
-            document.getElementById('rutas').innerHTML="Mostrar<br>Rutas";
+            document.getElementById('rutas').
+              innerHTML="Mostrar<br>Rutas";
         } else {
             srcArray.forEach((elem,index) => {
             map.addLayer(elem.routeLayerObj)
             }); 
-            document.getElementById('rutas').innerHTML="Ocultar<br>Rutas";
+            document.getElementById('rutas')
+              .innerHTML="Ocultar<br>Rutas";
         }
-        }); // end event listener click
+        }); // end event listener click routes
 
- 
+      document.getElementById('distancia-recorrida')
+        .innerHTML=`${Math.round(totalRouteLengthKm)} Km`;
+
+      addEventListener('orientationchange', event => {
+          console.log('orientation changed to:', 
+                      orientation);
+      });
+
+
 
     }) // end map on load
 
   }).
   then(() => console.log('Done loading and creating'));
-
 
 

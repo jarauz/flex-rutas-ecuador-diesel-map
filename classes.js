@@ -56,7 +56,7 @@ class PointSource{
             },
           'paint': {
             'line-color': this.color,
-            'line-width': 2,
+            'line-width': 3,
             'line-opacity': 0.4
             }
       };
