@@ -81,6 +81,18 @@ function energySourceChange(){
   energySource = (energySource + 1) % 2; // Switch between 0 and 1 with clicks
   let d1 = document.getElementById('energia-camion');
   let d2 = document.getElementById('gasto-camion');
+  let d3 = document.getElementById('subsidio-total');
+  let d4 = document.getElementById('camionesRutaInputId');
+  let d5 = document.getElementById('subsidioGalonInputId');
+  let v = Number(d4.value);
+  let q = Number(d5.value)
+  let totalDistance = Math.round( 
+    v * totalRouteLengthKm * daysActivePerYear);
+  let totalSubsidy = Math.round(
+    totalDistance / kmPerGalon 
+    * Number(q) );
+  let totalDistanceMillionsKm = Math.round(totalDistance/1000000);
+  let totalSubsidyMillionsUsd = (totalSubsidy/1000000).toFixed(1);
   if (energySource === 0){
     // if Diesel
     d1.innerHTML='ANUAL EN DIESEL';
@@ -90,6 +102,12 @@ function energySourceChange(){
                         / kmPerGalon
                         * galDieselPrice)
                         } USD`;
+
+
+    d3.innerHTML= `${totalSubsidyMillionsUsd.
+                   toLocaleString('es-US')} Millones de USD`;
+    d4.disabled = false;
+    d5.disabled = false;
   } else{
     // if Electric
     d1.innerHTML='ANUAL ELECTRICIDAD';
@@ -100,7 +118,9 @@ function energySourceChange(){
                         * daysActivePerYear
                         * kWhPrice)
                         } USD`;
-    document.getElementById('subsidio-total').innerHTML=`0 USD`;
+    d3.innerHTML=`0 USD`;
+    d4.disabled = true;
+    d5.disabled = true;
   }
 }
 
