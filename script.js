@@ -21,9 +21,15 @@ let animStatus = false;
 // Var to control show/not show of routes
 let showRoutes = true;
 let totalRouteLengthKm = 0;
+let kmPerGalon = 25;
+let daysActivePerYear = 300;
 
 // map var for mapbox map creation
 let map;
+
+// controls
+let sliderTrucks = document.getElementById('camionesRutaOutputId');
+let sliderSubsidy = document.getElementById('subsidioGalonOutputId')
 
 if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
   // true for mobile device
@@ -31,6 +37,34 @@ if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigat
 }else{
   // false for not mobile device
   console.log("not mobile device");
+}
+
+function computeTotalDTravel(v) {
+  //update displayed value when slider of number of trucks changes
+  sliderTrucks.value=v;
+  let d1 = document.getElementById('recorrido-total-anual');
+  let d2 = document.getElementById('subsidio-total');
+  let totalDistance = Math.round( 
+    v * totalRouteLengthKm * daysActivePerYear);
+  let totalSubsidy = Math.round(
+    totalDistance / kmPerGalon 
+    * Number(sliderSubsidy.value) );
+  let totalDistanceMillionsKm = Math.round(totalDistance/1000000);
+  d1.innerHTML= `${totalDistanceMillionsKm
+                   .toLocaleString('es-US')} Millones de Km`;
+  d2.innerHTML= `${totalSubsidy.toLocaleString('es-US')} USD`;
+}
+
+function computeSubsidy(v) {
+  //update displayed value when slider of number of trucks changes
+  sliderSubsidy.value=v;
+  let d2 = document.getElementById('subsidio-total');
+  let totalDistance = Math.round( 
+    Number(sliderTrucks.value) * totalRouteLengthKm * daysActivePerYear);
+  let totalSubsidy = Math.round(
+    totalDistance / kmPerGalon 
+    * Number(sliderSubsidy.value) );
+  d2.innerHTML= `${totalSubsidy.toLocaleString('es-US')} USD`;
 }
 
 function pointOnCircle(i) {
@@ -127,11 +161,12 @@ getJsonData(tripsFile) // Read JSON file  orig/dest, etc
       zoom: 7,
       pitch: 50
     });
-
-    map.addControl(new mapboxgl.FullscreenControl());
     
     map.on('load', () => {
 
+    map.addControl(new mapboxgl.FullscreenControl());
+    // Add zoom and rotation controls to the map.
+    map.addControl(new mapboxgl.NavigationControl());
       
       // Take source array and add sources and layers to
       // the map
@@ -157,7 +192,7 @@ getJsonData(tripsFile) // Read JSON file  orig/dest, etc
       });
 
 
-// map.moveLayer('route', 'point0');
+
       
       // Zero out elements of previousTimeStamp, counter
       // and direction arrays used 
@@ -188,7 +223,9 @@ getJsonData(tripsFile) // Read JSON file  orig/dest, etc
         animRequest = requestAnimationFrame(animateMapElements);
       }
 
-
+      animStatus=true;
+      animateMapElements(0);
+      
       document.getElementById('replay').
         addEventListener('click', () => {
         // Toggle the animation status 
@@ -226,6 +263,23 @@ getJsonData(tripsFile) // Read JSON file  orig/dest, etc
 
       document.getElementById('distancia-recorrida')
         .innerHTML=`${Math.round(totalRouteLengthKm)} Km`;
+      
+      document.getElementById('recorrido-total-anual')
+        .innerHTML=`${Math.round(
+          totalRouteLengthKm 
+          * sliderTrucks.value 
+          * daysActivePerYear
+          /1000000)
+          .toLocaleString('es-US')} Millones Km`;
+
+      document.getElementById('subsidio-total')
+        .innerHTML=`${Math.round(
+          totalRouteLengthKm
+          * sliderTrucks.value
+          * daysActivePerYear 
+          / kmPerGalon
+          * sliderSubsidy.value)
+          .toLocaleString('es-US')} USD`;
 
       addEventListener('orientationchange', event => {
           console.log('orientation changed to:', 

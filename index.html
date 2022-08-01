@@ -21,7 +21,7 @@
           <div class="one-container">
             <div class="oneA" id="map-one">
               <div class="overlay">
-                <button id="replay">Animar</button>
+                <button id="replay">Detener</button>
               </div>
               <div class="overlay">
                 <button id="rutas">Ocultar</br>Rutas</button>
@@ -38,7 +38,7 @@
                     11 rutas
                   </div>
                   <div class="output-medium">
-                    DISTANCIA
+                    LONGITUD<br>TOTAL
                   </div>
                   <div class="output-large" id="distancia-recorrida">
                       
@@ -47,32 +47,79 @@
             
               <div class="twoB">
                   <div class="output-small"> 
-                    Pago Anual
+                    Km Recorridos
                   </div>
                   <div class="output-medium">
-                    SUBSIDIO
+                    ANUAL
                   </div>
-                  <div class="output-large">
+                  <div class="output-large" id="recorrido-total-anual">
 
                   </div>    
               </div>
             
               <div class="twoC">
-                  <div> A </div>
-                  <div> B </div>
+
+                  <div class="output-small"> 
+                    Subsidio
+                  </div>
+                  <div class="output-medium">
+                    TOTAL ANUAL
+                  </div>
+                  <div class="output-large" id="subsidio-total">
+
+                  </div>   
+
               </div>
               
             </div>
             
             <div class="two-container-right">
 
-                <div>
-                <input type="range" name="ageInputName" 
-                  id="ageInputId" value="24" min="1" max="110"
-                  oninput="ageOutputId.value =
-                  ageInputId.value">
-                <output name="ageOutputName" 
-                  id="ageOutputId">36</output>
+                <div class="twoA-right">
+                  <div class="output-small">
+                    Número promedio de
+                  </div>
+                  <div class="output-medium">
+                    CAMIONES POR RUTA
+                  </div>
+                  <div class="output-large">  
+                  <div>
+                    <output id="camionesRutaOutputId">100</output>
+                  </div>
+                  <input type="range" id="camionesRutaInputId" 
+                    value="100" min="100" max="500" step="50" class="slider"
+                    oninput="computeTotalDTravel(this.value)">
+                  
+                  </div>
+                </div>
+
+                <div class="twoA-right">
+                  <div class="output-small">
+                    Galón de diesel
+                  </div>
+                  <div class="output-medium">
+                    SUBSIDIO [USD]
+                  </div>
+                  <div class="output-large">
+                  <div>
+                    <output id="subsidioGalonOutputId">2.5</output>
+                  </div>
+                  <input type="range" id="subsidioGalonInputId" 
+                    value="2.5" min="0" max="5" step="0.1" class="slider"
+                    oninput="computeSubsidy(this.value)">
+                  
+                  </div>
+                </div>
+
+                <div class="twoA-right" style="text-align:center;">
+                  <div class="output-small">
+                    Suposición:<br>Cada camión está <br> activo 300 días al año
+                    <br>
+                    En promedio un galón de diesel
+                    <br>
+                    permite circular por 25 Km
+                  </div>
+
                 </div>
               
             </div>
