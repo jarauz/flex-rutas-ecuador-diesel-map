@@ -23,6 +23,12 @@ let showRoutes = true;
 let totalRouteLengthKm = 0;
 let kmPerGalon = 25;
 let daysActivePerYear = 300;
+let energySource = 0; // 0 is Diesel, 1 is Electric
+let numRoutes = 11; // Has to match the total number of routes
+let galDieselPrice = 1.7; // Price onf one gallon of diesel ECU
+let kWhPrice = 0.12; // Price of one kilowatt hour
+let rangeBatteryKm = 275 * 1.6; // truck range
+let batteryCapacitykWh = 565; // truck battery capacity
 
 // map var for mapbox map creation
 let map;
@@ -50,9 +56,11 @@ function computeTotalDTravel(v) {
     totalDistance / kmPerGalon 
     * Number(sliderSubsidy.value) );
   let totalDistanceMillionsKm = Math.round(totalDistance/1000000);
+  let totalSubsidyMillionsUsd = (totalSubsidy/1000000).toFixed(1);
   d1.innerHTML= `${totalDistanceMillionsKm
                    .toLocaleString('es-US')} Millones de Km`;
-  d2.innerHTML= `${totalSubsidy.toLocaleString('es-US')} USD`;
+  d2.innerHTML= `${totalSubsidyMillionsUsd.
+                   toLocaleString('es-US')} Millones de USD`;
 }
 
 function computeSubsidy(v) {
@@ -64,8 +72,39 @@ function computeSubsidy(v) {
   let totalSubsidy = Math.round(
     totalDistance / kmPerGalon 
     * Number(sliderSubsidy.value) );
-  d2.innerHTML= `${totalSubsidy.toLocaleString('es-US')} USD`;
+  let totalSubsidyMillionsUsd = (totalSubsidy/1000000).toFixed(1);
+  d2.innerHTML= `${totalSubsidyMillionsUsd.
+                   toLocaleString('es-US')} Millones de USD`;
 }
+
+function energySourceChange(){
+  energySource = (energySource + 1) % 2; // Switch between 0 and 1 with clicks
+  let d1 = document.getElementById('energia-camion');
+  let d2 = document.getElementById('gasto-camion');
+  if (energySource === 0){
+    // if Diesel
+    d1.innerHTML='ANUAL EN DIESEL';
+    d2.innerHTML=`${Math.round(totalRouteLengthKm
+                        / numRoutes
+                        * daysActivePerYear
+                        / kmPerGalon
+                        * galDieselPrice)
+                        } USD`;
+  } else{
+    // if Electric
+    d1.innerHTML='ANUAL ELECTRICIDAD';
+    d2.innerHTML=`${Math.round(totalRouteLengthKm
+                        / numRoutes
+                        * batteryCapacitykWh
+                        / rangeBatteryKm
+                        * daysActivePerYear
+                        * kWhPrice)
+                        } USD`;
+    document.getElementById('subsidio-total').innerHTML=`0 USD`;
+  }
+}
+
+
 
 function pointOnCircle(i) {
   // Grabs coordinates from trips object
@@ -278,8 +317,17 @@ getJsonData(tripsFile) // Read JSON file  orig/dest, etc
           * sliderTrucks.value
           * daysActivePerYear 
           / kmPerGalon
-          * sliderSubsidy.value)
-          .toLocaleString('es-US')} USD`;
+          * sliderSubsidy.value
+          / 1000000)
+          .toLocaleString('es-US')} Millones de USD`;
+
+      document.getElementById('gasto-camion')
+        .innerHTML = `${Math.round(totalRouteLengthKm
+                        / numRoutes
+                        * daysActivePerYear
+                        / kmPerGalon
+                        * galDieselPrice)
+                        } USD`;
 
       addEventListener('orientationchange', event => {
           console.log('orientation changed to:', 

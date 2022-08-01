@@ -32,10 +32,24 @@
         <div class="box two">
           <div class="two-container">
             <div class="two-container-left">
-              
+
               <div class="twoA">
+
+                  <div class="output-small" style="text-align: center;"> 
+                    Gasto Propietario 1 Camión
+                  </div>
+                  <div class="output-medium" id="energia-camion">
+                    ANUAL EN DIESEL
+                  </div>
+                  <div class="output-large" id="gasto-camion">
+
+                  </div>   
+
+              </div>
+              
+              <div class="twoB">
                   <div class="output-small"> 
-                    11 rutas
+                    11 Rutas
                   </div>
                   <div class="output-medium">
                     LONGITUD<br>TOTAL
@@ -45,7 +59,7 @@
                   </div>   
               </div>
             
-              <div class="twoB">
+              <div class="twoC">
                   <div class="output-small"> 
                     Km Recorridos
                   </div>
@@ -57,7 +71,7 @@
                   </div>    
               </div>
             
-              <div class="twoC">
+              <div class="twoD">
 
                   <div class="output-small"> 
                     Subsidio
@@ -70,10 +84,30 @@
                   </div>   
 
               </div>
+
+
+
               
             </div>
             
             <div class="two-container-right">
+
+                <div class="twoA-right">
+                  <div class="output-small">
+                    Cambiar Tecnología
+                  </div>
+                  <div class="output-medium">
+                    DIESEL &#x2194 ELECTRICO
+                  </div>
+                  <div>
+                    <label class="switch">
+                      <input type="checkbox" 
+                        id="typeOfEnergyId" onclick="energySourceChange()">
+                      <span class="sliderSwitch round"></span>
+                    </label>
+                  </div>
+
+                </div>
 
                 <div class="twoA-right">
                   <div class="output-small">
@@ -117,7 +151,13 @@
                     <br>
                     En promedio un galón de diesel
                     <br>
-                    permite circular por 25 Km
+                    permite circular por 25 Km.
+                    <br>
+                    Costo por galón 1.7 USD.
+                    <br>
+                    Costo kWh 0.12 USD
+                    <br>
+                    275 millas alcance<br>con batería de 565 kWh
                   </div>
 
                 </div>
