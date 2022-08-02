@@ -223,6 +223,9 @@ getJsonData(tripsFile) // Read JSON file  orig/dest, etc
     
     map.on('load', () => {
 
+    document.getElementById('intro-title')
+      .innerHTML='ECUADOR: DIESEL vs. ELECTRIFICACIÓN';
+
     map.addControl(new mapboxgl.FullscreenControl());
     // Add zoom and rotation controls to the map.
     map.addControl(new mapboxgl.NavigationControl());
